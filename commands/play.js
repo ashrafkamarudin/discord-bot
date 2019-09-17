@@ -2,6 +2,7 @@ const {
 	Util
 } = require('discord.js');
 const ytdl = require('ytdl-core');
+const fetch = require("node-fetch");
 
 module.exports = {
 	name: 'play',
@@ -18,7 +19,27 @@ module.exports = {
 			return message.channel.send('I need the permissions to join and speak in your voice channel!');
 		}
 
-		const songInfo = await ytdl.getInfo(args[1]);
+        let api = 'https://www.googleapis.com/youtube/v3/search';
+        const part = 'snippet';
+        const key = 'AIzaSyA1dIBKIpIH1Toc8U7pu-KWKiR-2tNSHCE';
+        const maxResults = 1;
+
+        api += '?part=' + part + '&key=' + key + '&maxResults=' + maxResults + '&q=' + message.content.replace(/^!search+/i, '');
+
+        var response = await fetch(api)
+            .then(response => response.json())
+            .then(data => result = data)
+            //.then(json => console.log(result))
+
+        console.log(
+            ' search query : ' + message.content.replace(/^!search+/i, '') +
+            '\n api url : ' + api + '\n data : \n');
+
+        console.log(response);
+
+        yt_videoId = response.items[0].id.videoId;
+
+		const songInfo = await ytdl.getInfo('https://www.youtube.com/watch?v=' + yt_videoId);
 		const song = {
 			title: songInfo.title,
 			url: songInfo.video_url,
@@ -74,5 +95,32 @@ module.exports = {
 				console.error(error);
 			});
 		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-	}
+	},
+
+	async search_yt(q) {
+        // includes
+        const fetch = require("node-fetch");
+
+        let api = 'https://www.googleapis.com/youtube/v3/search';
+        const part = 'snippet';
+        const key = 'AIzaSyA1dIBKIpIH1Toc8U7pu-KWKiR-2tNSHCE';
+        const maxResults = 1;
+
+        api += '?part=' + part + '&key=' + key + '&maxResults=' + maxResults + '&q=' + q;
+
+        var response = await fetch(api)
+            .then(response => response.json())
+            .then(data => result = data)
+            //.then(json => console.log(result))
+
+        console.log(
+            ' search query : ' + message.content.replace(/^!search+/i, '') +
+            '\n api url : ' + api + '\n data : \n');
+
+        console.log(response);
+
+        yt_videoId = response.items[0].id.videoId;
+        
+		return 'https://www.youtube.com/watch?v=' + yt_videoId;
+    }
 };
