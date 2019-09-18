@@ -1,7 +1,9 @@
 const {
 	Util
 } = require('discord.js');
+
 const ytdl = require('ytdl-core');
+const ytdlDiscord = require('ytdl-core-discord');
 const fetch = require("node-fetch");
 
 module.exports = {
@@ -21,7 +23,7 @@ module.exports = {
 
         let api = 'https://www.googleapis.com/youtube/v3/search';
         const part = 'snippet';
-        const key = 'AIzaSyA1dIBKIpIH1Toc8U7pu-KWKiR-2tNSHCE';
+        const key = 'YOUR_KEY';
         const maxResults = 1;
 
         api += '?part=' + part + '&key=' + key + '&maxResults=' + maxResults + '&q=' + message.content.replace(/^!search+/i, '');
@@ -74,7 +76,7 @@ module.exports = {
 		}
 	},
 
-	play(message, song) {
+	async play(message, song) {
 		const queue = message.client.queue;
 		const guild = message.guild;
 		const serverQueue = queue.get(message.guild.id);
@@ -85,13 +87,15 @@ module.exports = {
 			return;
 		}
 	
-		const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-			.on('end', () => {
+		const dispatcher = serverQueue.connection.playOpusStream(await ytdlDiscord('https://www.youtube.com/watch?v=' + yt_videoId));
+
+			dispatcher.on('end', () => {
 				console.log('Music ended!');
 				serverQueue.songs.shift();
 				this.play(message, serverQueue.songs[0]);
 			})
-			.on('error', error => {
+
+			dispatcher.on('error', error => {
 				console.error(error);
 			});
 		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
