@@ -20,6 +20,7 @@
     "ffmpeg-binaries": "^4.0.0",
     "node-fetch": "^2.6.0",
     "opusscript": "0.0.6",
-    "ytdl-core": "^0.29.7"
+    "ytdl-core": "^0.29.7",
+    "ytdl-core-discord": "^1.0.3"
   }
 }
