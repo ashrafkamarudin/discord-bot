@@ -7,11 +7,13 @@ module.exports = {
 		let str = '';
 		const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+		str += '====**** List of Commands ****====\n\n';
+
 		for (const file of commandFiles) {
 			const command = require(`./${file}`);
-			str += `Command => ${command.name}, Description => ${command.description} \n`;
+			str += `[!${command.name}] => ${command.description} \n`;
 		}
 
-		message.channel.send(str);
+		message.channel.send('```' + str + '```');
 	},
 };

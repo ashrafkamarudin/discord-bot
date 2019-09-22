@@ -23,7 +23,7 @@ module.exports = {
 
         let api = 'https://www.googleapis.com/youtube/v3/search';
         const part = 'snippet';
-        const key = 'YOUR_KEY';
+        const key = 'AIzaSyA1dIBKIpIH1Toc8U7pu-KWKiR-2tNSHCE';
         const maxResults = 1;
 
         api += '?part=' + part + '&key=' + key + '&maxResults=' + maxResults + '&q=' + message.content.replace(/^!search+/i, '');
@@ -72,7 +72,7 @@ module.exports = {
 			}
 		} else {
 			serverQueue.songs.push(song);
-			return message.channel.send(`${song.title} has been added to the queue!`);
+			return message.channel.send('```' + `${song.title} has been added to the queue!` + '```');
 		}
 	},
 
@@ -99,6 +99,9 @@ module.exports = {
 				console.error(error);
 			});
 		dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+
+
+		return message.channel.send('```' + `Playing: ${serverQueue.songs[0].title}` + '```');
 	},
 
 	async search_yt(q) {

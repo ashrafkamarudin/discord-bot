@@ -11,6 +11,6 @@ module.exports = {
 
         //console.log(serverQueue);
         
-		return message.channel.send(str);
+		return message.channel.send('```' + str + '```');
 	},
 };
