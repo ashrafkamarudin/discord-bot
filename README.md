@@ -1,5 +1,5 @@
 # Discord-bot
-A simple discord bot which helps you manage your server by providing useful commands like playing music or deleting text messages.
+A simple discord bot that plays, skip, next and queue youtube songs in your discord server.
 
 This project is a fork from <a href="https://github.com/TannerGabriel/discord-bot" target="_blank">TannerGabriel/discord-bot</a>
 
